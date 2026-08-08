@@ -1,0 +1,131 @@
+{
+  "version": "2026.08.08",
+  "notice": "以下内容用于《中华人民共和国托育服务法（草案）》公益科普，不构成个案法律意见、医疗诊断或正式政策解释。",
+  "items": [
+    {
+      "id": "draft-status",
+      "title": "托育服务法目前是什么状态",
+      "audiences": ["guardian", "child"],
+      "keywords": ["生效", "通过", "草案", "法律", "立法", "什么时候实施"],
+      "answer": "《中华人民共和国托育服务法》目前仍处于草案审议阶段。科普时应使用“草案提出”“草案拟规定”等表述，不能把草案内容说成已经生效的法律。",
+      "childAnswer": "这是一份正在讨论、完善的规则草案。我们可以学习它想怎样保护宝宝，但不能说它已经正式生效。",
+      "reviewStatus": "approved",
+      "source": {
+        "title": "中华人民共和国托育服务法（草案）",
+        "url": "https://www.npc.gov.cn/flcaw/flca/ff8081819aedd494019b54fbd17e7759/attachment.pdf",
+        "article": "草案全文",
+        "status": "草案",
+        "updatedAt": "2026-08-08"
+      }
+    },
+    {
+      "id": "healthy-growth",
+      "title": "保障婴幼儿健康成长",
+      "audiences": ["guardian", "child"],
+      "keywords": ["健康", "成长", "权益", "保护", "宝宝", "婴幼儿"],
+      "answer": "草案以保障婴幼儿健康成长为主线，托育服务应当把婴幼儿的生命安全、身心健康和人格尊严放在重要位置。对低龄儿童开展活动时，应遵循其成长规律，并由监护人或可信照护者陪同。",
+      "childAnswer": "每个宝宝都应该被温柔照顾、平安成长。觉得害怕或不舒服时，可以马上告诉家长或老师。",
+      "reviewStatus": "approved",
+      "source": {
+        "title": "中华人民共和国托育服务法（草案）",
+        "url": "https://www.npc.gov.cn/flcaw/flca/ff8081819aedd494019b54fbd17e7759/attachment.pdf",
+        "article": "第一章 总则",
+        "status": "草案",
+        "updatedAt": "2026-08-08"
+      }
+    },
+    {
+      "id": "safe-environment",
+      "title": "安全的托育环境",
+      "audiences": ["guardian", "child"],
+      "keywords": ["环境", "场所", "设施", "消防", "卫生", "安全", "活动室"],
+      "answer": "家长考察托育环境时，可重点观察场地是否整洁防滑、通道是否畅通、设施是否适龄、危险物品是否隔离，以及消防、食品和卫生管理是否清晰可查。发现明显风险时，应先停止使用相关区域并向机构反映。",
+      "childAnswer": "干净的地面、收好的玩具和有大人看护的活动区，会让宝宝玩得更安全。",
+      "reviewStatus": "approved",
+      "source": {
+        "title": "中华人民共和国托育服务法（草案）",
+        "url": "https://www.npc.gov.cn/flcaw/flca/ff8081819aedd494019b54fbd17e7759/attachment.pdf",
+        "article": "第二章 托育机构、第四章 服务提供",
+        "status": "草案",
+        "updatedAt": "2026-08-08"
+      }
+    },
+    {
+      "id": "institution-duty",
+      "title": "托育机构应承担哪些基本责任",
+      "audiences": ["guardian"],
+      "keywords": ["机构", "责任", "备案", "照护", "托育园", "资质"],
+      "answer": "草案围绕托育机构的设立、服务提供、安全管理和监督责任作出制度安排。选择机构时，家长可核实登记备案情况、人员配置、收费合同、安全制度、膳食卫生和应急预案，并保留合同与沟通记录。具体要求应以最终通过的法律和当地现行规定为准。",
+      "reviewStatus": "approved",
+      "source": {
+        "title": "中华人民共和国托育服务法（草案）",
+        "url": "https://www.npc.gov.cn/flcaw/flca/ff8081819aedd494019b54fbd17e7759/attachment.pdf",
+        "article": "第二章 托育机构",
+        "status": "草案",
+        "updatedAt": "2026-08-08"
+      }
+    },
+    {
+      "id": "child-protection",
+      "title": "发现儿童可能受到伤害时怎么办",
+      "audiences": ["guardian", "child"],
+      "keywords": ["伤害", "虐待", "打", "体罚", "欺负", "害怕", "不舒服", "性侵"],
+      "answer": "先确保儿童离开可能的危险，保持平静并认真倾听，不诱导、不责怪；及时记录可观察到的情况并寻求专业帮助。存在正在发生的人身危险时拨打110；出现严重受伤、意识异常或呼吸困难时立即拨打120。本助手不能替代公安、医疗或专业法律服务。",
+      "childAnswer": "如果有人让你害怕、疼痛或很不舒服，要马上离开并告诉家长、老师或警察。紧急时请大人拨打110或120。",
+      "reviewStatus": "approved",
+      "source": {
+        "title": "中华人民共和国未成年人保护法",
+        "url": "https://flk.npc.gov.cn/detail2.html?ZmY4MDgxODE3OTZhNjM2YTAxNzk4MjJhMTk2NDBjOTI%3D",
+        "article": "未成年人安全保护相关规定",
+        "status": "现行法律",
+        "updatedAt": "2026-08-08"
+      }
+    },
+    {
+      "id": "care-records",
+      "title": "家长怎样记录和反馈照护问题",
+      "audiences": ["guardian"],
+      "keywords": ["投诉", "反馈", "记录", "证据", "沟通", "监控", "家长"],
+      "answer": "发现照护问题时，可按时间记录可观察事实，保存合同、缴费凭证和与机构的沟通信息，并先通过机构公开渠道反馈。涉及安全、卫生、侵害等问题时，应根据紧急程度联系属地卫生健康等主管部门、公安机关或医疗机构。不要在公开网络传播可识别儿童身份的照片、姓名和健康信息。",
+      "reviewStatus": "approved",
+      "source": {
+        "title": "中华人民共和国托育服务法（草案）",
+        "url": "https://www.npc.gov.cn/flcaw/flca/ff8081819aedd494019b54fbd17e7759/attachment.pdf",
+        "article": "第六章 监督管理",
+        "status": "草案",
+        "updatedAt": "2026-08-08"
+      }
+    },
+    {
+      "id": "emergency-plan",
+      "title": "紧急情况与应急处置",
+      "audiences": ["guardian", "child"],
+      "keywords": ["紧急", "急救", "流血", "呼吸", "昏迷", "走失", "110", "120"],
+      "answer": "出现严重受伤、无法呼吸、意识异常等紧急情况，应立即拨打120并采取专业人员指导下的处置；存在暴力、走失或持续人身危险时拨打110。不要等待网络问答，也不要让儿童独自处理。机构还应及时通知监护人并按制度记录事件。",
+      "childAnswer": "紧急情况要马上找大人。大人可以拨打120找医生，遇到危险或走失可以拨打110找警察。",
+      "reviewStatus": "approved",
+      "source": {
+        "title": "中华人民共和国托育服务法（草案）",
+        "url": "https://www.npc.gov.cn/flcaw/flca/ff8081819aedd494019b54fbd17e7759/attachment.pdf",
+        "article": "第四章 服务提供",
+        "status": "草案",
+        "updatedAt": "2026-08-08"
+      }
+    },
+    {
+      "id": "supervision",
+      "title": "托育服务由哪些方面监督",
+      "audiences": ["guardian"],
+      "keywords": ["监管", "主管部门", "卫健", "举报", "政府", "监督"],
+      "answer": "草案拟构建政府有关部门分工协作、机构履责、社会监督相结合的监管机制。遇到一般咨询或投诉时，可先查询当地政府公开的托育服务主管部门和办理渠道；不同地区的具体受理部门与流程可能不同，应以属地现行公开信息为准。",
+      "reviewStatus": "approved",
+      "source": {
+        "title": "中华人民共和国托育服务法（草案）",
+        "url": "https://www.npc.gov.cn/flcaw/flca/ff8081819aedd494019b54fbd17e7759/attachment.pdf",
+        "article": "第六章 监督管理",
+        "status": "草案",
+        "updatedAt": "2026-08-08"
+      }
+    }
+  ]
+}

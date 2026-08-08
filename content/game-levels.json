@@ -1,0 +1,222 @@
+{
+  "version": "2026.08.08",
+  "reviewStatus": "approved",
+  "levels": [
+    {
+      "id": "safe-nursery",
+      "order": 1,
+      "title": "安全托育小侦探",
+      "shortTitle": "找安全",
+      "theme": "sunshine",
+      "emoji": "🏡",
+      "summary": "和家长一起观察环境，找到让宝宝安心成长的安全细节。",
+      "sourceKnowledgeIds": ["healthy-growth", "safe-environment", "institution-duty"],
+      "scenes": [
+        {
+          "id": "safe-room",
+          "prompt": "活动室里，哪一种做法更安全？",
+          "narration": "请和宝宝一起看看，哪一个活动室更安全。",
+          "illustration": "🧸",
+          "choices": [
+            {
+              "id": "clear-floor",
+              "label": "玩具收进矮柜，地面干净防滑",
+              "isSafe": true,
+              "feedback": "找到了！通道整洁、防滑，宝宝活动更安心。"
+            },
+            {
+              "id": "messy-floor",
+              "label": "玩具和电线散落在过道里",
+              "isSafe": false,
+              "feedback": "我们再看看。散落的玩具和电线容易绊倒，要请大人及时整理。"
+            }
+          ]
+        },
+        {
+          "id": "safe-food",
+          "prompt": "准备点心时，哪一种做法更合适？",
+          "narration": "吃东西前，我们先找一找安全做法。",
+          "illustration": "🍎",
+          "choices": [
+            {
+              "id": "check-food",
+              "label": "照护者洗手，并核对食物和过敏信息",
+              "isSafe": true,
+              "feedback": "真细心！清洁双手、核对信息，是照护宝宝的重要步骤。"
+            },
+            {
+              "id": "unknown-food",
+              "label": "把来历不清的零食直接给宝宝",
+              "isSafe": false,
+              "feedback": "先不要吃。食物要由可信照护者确认，家长也要提前告知过敏情况。"
+            }
+          ]
+        },
+        {
+          "id": "safe-caregiver",
+          "prompt": "家长接宝宝时，什么做法更让人放心？",
+          "narration": "接宝宝回家，也有重要的安全规则。",
+          "illustration": "👨‍👩‍👧",
+          "choices": [
+            {
+              "id": "verify-pickup",
+              "label": "托育人员核对家长或约定接送人",
+              "isSafe": true,
+              "feedback": "答对啦！认真核对接送信息，可以守护宝宝的安全。"
+            },
+            {
+              "id": "no-check",
+              "label": "不核对身份，谁来都可以接走",
+              "isSafe": false,
+              "feedback": "这不安全。接送身份要认真核对，有疑问要立刻联系家长。"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "body-boundaries",
+      "order": 2,
+      "title": "身体边界小卫士",
+      "shortTitle": "会表达",
+      "theme": "peach",
+      "emoji": "🛡️",
+      "summary": "用简单、积极的方式练习表达不舒服，并马上告诉可信的大人。",
+      "sourceKnowledgeIds": ["healthy-growth", "child-protection", "care-records"],
+      "scenes": [
+        {
+          "id": "say-no",
+          "prompt": "有人让宝宝感到不舒服时，可以怎么做？",
+          "narration": "不舒服的时候，我们可以大声表达。",
+          "illustration": "✋",
+          "choices": [
+            {
+              "id": "say-stop",
+              "label": "说“不要，我不舒服”，并走向家长或老师",
+              "isSafe": true,
+              "feedback": "做得好！表达不舒服不是宝宝的错，要马上找可信的大人。"
+            },
+            {
+              "id": "keep-secret",
+              "label": "因为害怕，一直保守让自己难受的秘密",
+              "isSafe": false,
+              "feedback": "不用独自害怕。让自己难受的秘密，要告诉家长或可信照护者。"
+            }
+          ]
+        },
+        {
+          "id": "care-explain",
+          "prompt": "需要换衣、清洁或检查身体时，大人应该怎样做？",
+          "narration": "日常照护也要尊重宝宝的感受。",
+          "illustration": "🫶",
+          "choices": [
+            {
+              "id": "explain-care",
+              "label": "可信照护者先说明、保护隐私并关注宝宝反应",
+              "isSafe": true,
+              "feedback": "很棒！必要照护要有说明、有边界，也要回应宝宝的不安。"
+            },
+            {
+              "id": "force-care",
+              "label": "不说明原因，还要求宝宝不能告诉家长",
+              "isSafe": false,
+              "feedback": "这不合适。照护不应变成秘密，家长有权了解宝宝的照护情况。"
+            }
+          ]
+        },
+        {
+          "id": "tell-adult",
+          "prompt": "宝宝回家后总是害怕某个人，家长应当怎么做？",
+          "narration": "宝宝的情绪和行为变化，值得大人认真听见。",
+          "illustration": "💬",
+          "choices": [
+            {
+              "id": "listen-record",
+              "label": "平静倾听、保障安全，并向机构或专业部门核实",
+              "isSafe": true,
+              "feedback": "对啦！先保护、再倾听、妥善记录，需要时及时求助。"
+            },
+            {
+              "id": "blame-child",
+              "label": "责怪宝宝不懂事，要求他不要再说",
+              "isSafe": false,
+              "feedback": "请不要责怪宝宝。大人要认真回应异常表现，先把安全放在第一位。"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "trusted-help",
+      "order": 3,
+      "title": "可信求助向导",
+      "shortTitle": "会求助",
+      "theme": "ocean",
+      "emoji": "📣",
+      "summary": "认识可信照护者，练习在陌生接触、走失和紧急情况中及时求助。",
+      "sourceKnowledgeIds": ["emergency-plan", "child-protection", "supervision"],
+      "scenes": [
+        {
+          "id": "unknown-pickup",
+          "prompt": "不认识的人说“家长让我接你”，应该怎么办？",
+          "narration": "没有确认过的陌生接送，我们先不跟着走。",
+          "illustration": "🚪",
+          "choices": [
+            {
+              "id": "stay-tell",
+              "label": "留在照护者身边，请老师联系家长确认",
+              "isSafe": true,
+              "feedback": "答对啦！不独自离开，请可信照护者帮助确认。"
+            },
+            {
+              "id": "leave-alone",
+              "label": "因为对方有礼物，就马上跟着走",
+              "isSafe": false,
+              "feedback": "先停下来。礼物不能代替身份确认，要马上告诉老师或家长。"
+            }
+          ]
+        },
+        {
+          "id": "lost-help",
+          "prompt": "在公共场所找不到家长时，哪一种求助更安全？",
+          "narration": "如果暂时找不到家长，我们留在安全、显眼的地方。",
+          "illustration": "🧭",
+          "choices": [
+            {
+              "id": "uniform-help",
+              "label": "找穿制服的工作人员或带孩子的家庭，请他们报警",
+              "isSafe": true,
+              "feedback": "很好！留在公共区域，请明确身份的工作人员帮助联系家长或报警。"
+            },
+            {
+              "id": "quiet-corner",
+              "label": "一个人躲到偏僻角落里等待",
+              "isSafe": false,
+              "feedback": "不要躲到偏僻处。留在明亮、有人值守的位置会更安全。"
+            }
+          ]
+        },
+        {
+          "id": "urgent-help",
+          "prompt": "出现严重受伤、无法呼吸等紧急情况时，大人应当怎么做？",
+          "narration": "紧急情况要立刻请专业人员帮助。",
+          "illustration": "🚑",
+          "choices": [
+            {
+              "id": "call-emergency",
+              "label": "立即拨打120；存在人身危险时同时报警110",
+              "isSafe": true,
+              "feedback": "正确！先保障现场安全，立即联系急救或公安，并通知监护人。"
+            },
+            {
+              "id": "wait-online",
+              "label": "只在网上提问，等陌生人回复后再决定",
+              "isSafe": false,
+              "feedback": "紧急情况不能等待网络回答。请立即拨打120或110。"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

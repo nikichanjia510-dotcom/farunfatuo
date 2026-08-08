@@ -1,0 +1,18 @@
+{
+  "name": "tuobao-legal-care",
+  "version": "1.0.0",
+  "private": true,
+  "description": "“法润托育·智护成长”托宝法治早教答辩展示产品",
+  "packageManager": "pnpm@11.16.0",
+  "scripts": {
+    "dev": "pnpm --parallel --filter @tuobao/api --filter @tuobao/web dev",
+    "lint": "pnpm -r typecheck",
+    "test": "pnpm -r test",
+    "build": "pnpm -r build",
+    "e2e": "playwright test",
+    "check": "pnpm lint && pnpm test && pnpm build"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.55.0"
+  }
+}

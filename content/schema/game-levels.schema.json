@@ -1,0 +1,57 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://tuobao.local/schema/game-levels.schema.json",
+  "title": "托宝游戏关卡",
+  "type": "object",
+  "required": ["version", "reviewStatus", "levels"],
+  "properties": {
+    "version": { "type": "string" },
+    "reviewStatus": { "enum": ["draft", "approved"] },
+    "levels": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["id", "order", "title", "shortTitle", "theme", "emoji", "summary", "sourceKnowledgeIds", "scenes"],
+        "properties": {
+          "id": { "type": "string", "pattern": "^[a-z0-9-]+$" },
+          "order": { "type": "integer", "minimum": 1 },
+          "title": { "type": "string", "minLength": 1 },
+          "shortTitle": { "type": "string", "minLength": 1 },
+          "theme": { "type": "string" },
+          "emoji": { "type": "string" },
+          "summary": { "type": "string" },
+          "sourceKnowledgeIds": { "type": "array", "items": { "type": "string" } },
+          "scenes": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "object",
+              "required": ["id", "prompt", "narration", "illustration", "choices"],
+              "properties": {
+                "id": { "type": "string" },
+                "prompt": { "type": "string" },
+                "narration": { "type": "string" },
+                "illustration": { "type": "string" },
+                "choices": {
+                  "type": "array",
+                  "minItems": 2,
+                  "items": {
+                    "type": "object",
+                    "required": ["id", "label", "isSafe", "feedback"],
+                    "properties": {
+                      "id": { "type": "string" },
+                      "label": { "type": "string" },
+                      "isSafe": { "type": "boolean" },
+                      "feedback": { "type": "string" }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

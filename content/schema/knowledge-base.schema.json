@@ -1,0 +1,38 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://tuobao.local/schema/knowledge-base.schema.json",
+  "title": "托宝审核知识库",
+  "type": "object",
+  "required": ["version", "notice", "items"],
+  "properties": {
+    "version": { "type": "string" },
+    "notice": { "type": "string" },
+    "items": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "title", "audiences", "keywords", "answer", "reviewStatus", "source"],
+        "properties": {
+          "id": { "type": "string", "pattern": "^[a-z0-9-]+$" },
+          "title": { "type": "string" },
+          "audiences": { "type": "array", "items": { "enum": ["child", "guardian"] } },
+          "keywords": { "type": "array", "items": { "type": "string" } },
+          "answer": { "type": "string" },
+          "childAnswer": { "type": "string" },
+          "reviewStatus": { "enum": ["draft", "approved"] },
+          "source": {
+            "type": "object",
+            "required": ["title", "url", "article", "status", "updatedAt"],
+            "properties": {
+              "title": { "type": "string" },
+              "url": { "type": "string", "format": "uri" },
+              "article": { "type": "string" },
+              "status": { "type": "string" },
+              "updatedAt": { "type": "string", "format": "date" }
+            }
+          }
+        }
+      }
+    }
+  }
+}
