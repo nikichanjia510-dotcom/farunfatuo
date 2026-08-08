@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 420 420" role="img" aria-labelledby="title desc">
+  <title id="title">托宝占位形象</title>
+  <desc id="desc">一个戴着安全星星的小云朵伙伴，等待替换为正式托宝IP</desc>
+  <defs>
+    <linearGradient id="body" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#fffdf4"/>
+      <stop offset="1" stop-color="#ffe9b3"/>
+    </linearGradient>
+    <linearGradient id="hat" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#ff806d"/>
+      <stop offset="1" stop-color="#ef5c50"/>
+    </linearGradient>
+    <filter id="shadow" x="-30%" y="-30%" width="160%" height="170%">
+      <feDropShadow dx="0" dy="16" stdDeviation="14" flood-color="#a1693c" flood-opacity=".2"/>
+    </filter>
+  </defs>
+  <g filter="url(#shadow)">
+    <path fill="#77c7b2" d="M87 276c-24 35-27 70-8 87 19 16 53 4 75-25l-67-62Z"/>
+    <path fill="#77c7b2" d="M333 276c24 35 27 70 8 87-19 16-53 4-75-25l67-62Z"/>
+    <path fill="url(#body)" stroke="#f3bd58" stroke-width="8" d="M116 142c-31 4-57 29-60 62-4 36 22 68 56 74 9 54 50 91 98 91s89-37 98-91c35-6 60-38 56-74-3-33-29-58-60-62-15-50-50-82-94-82s-79 32-94 82Z"/>
+    <path fill="url(#hat)" stroke="#e84e45" stroke-width="7" stroke-linejoin="round" d="M130 120c23-47 62-70 105-63 27 4 48 18 63 39-25 4-51 16-73 34-34-17-65-18-95-10Z"/>
+    <path fill="#ffd65e" stroke="#fff5c6" stroke-width="6" d="m225 77 8 17 19 3-14 13 3 19-16-9-17 9 4-19-14-13 19-3 8-17Z"/>
+    <ellipse cx="166" cy="218" rx="13" ry="17" fill="#273750"/>
+    <ellipse cx="254" cy="218" rx="13" ry="17" fill="#273750"/>
+    <circle cx="170" cy="213" r="4" fill="#fff"/>
+    <circle cx="258" cy="213" r="4" fill="#fff"/>
+    <path d="M187 259c15 14 31 14 46 0" fill="none" stroke="#273750" stroke-width="8" stroke-linecap="round"/>
+    <ellipse cx="135" cy="250" rx="20" ry="10" fill="#ff9e91" opacity=".48"/>
+    <ellipse cx="285" cy="250" rx="20" ry="10" fill="#ff9e91" opacity=".48"/>
+    <path fill="#fff" stroke="#59ad99" stroke-width="7" d="M210 295c28-19 57-4 53 23-4 27-32 41-53 52-21-11-49-25-53-52-4-27 25-42 53-23Z"/>
+    <path fill="#77c7b2" d="m210 305 6 13 14 2-10 10 2 14-12-7-13 7 3-14-11-10 15-2 6-13Z"/>
+  </g>
+</svg>

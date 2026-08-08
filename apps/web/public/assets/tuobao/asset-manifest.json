@@ -1,0 +1,24 @@
+{
+  "version": "1.0.0",
+  "assets": {
+    "mascot": {
+      "current": "mascot-placeholder.svg",
+      "replacement": "mascot-main.webp",
+      "recommendedSize": "1200x1200",
+      "transparentBackground": true,
+      "alt": "托宝IP主形象"
+    },
+    "videoPoster": {
+      "current": "video-placeholder.svg",
+      "replacement": "legal-video-poster.webp",
+      "recommendedSize": "1920x1080",
+      "transparentBackground": false,
+      "alt": "托育法治科普动画封面"
+    },
+    "video": {
+      "replacement": "legal-video.mp4",
+      "recommendedSize": "1920x1080",
+      "captions": "legal-video.zh-CN.vtt"
+    }
+  }
+}
