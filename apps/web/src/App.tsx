@@ -1,5 +1,6 @@
+// apps/web/src/App.tsx
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import { AlertTriangle, LoaderCircle, RefreshCcw } from 'lucide-react';
+import { AlertTriangle, LoaderCircle, RefreshCcw, X, Mic, Volume2, CheckCircle2, Sparkles } from 'lucide-react';
 import { fetchBootstrap, getSessionId } from './api';
 import { AdminPanel } from './components/AdminPanel';
 import { AssistantPanel } from './components/AssistantPanel';
@@ -10,8 +11,9 @@ import { Header } from './components/Header';
 import { HomePage } from './components/HomePage';
 import { SourcesPanel } from './components/SourcesPanel';
 import { VideoPlaceholder } from './components/VideoPlaceholder';
-import { stopSpeaking } from './speech';
+import { stopSpeaking, speak } from './speech';
 import type { BootstrapContent, SectionId } from './types';
+import { useTuobaoProgress, type AgeLevel } from './useTuobaoProgress'; // 导入新Hook
 
 const protectedSections = new Set<SectionId>(['game', 'assistant']);
 
@@ -28,6 +30,22 @@ export function App() {
   const [reduceMotion, setReduceMotion] = useState(
     () => window.matchMedia('(prefers-reduced-motion: reduce)').matches,
   );
+  
+  // 引入打卡与年龄Hook
+  const { 
+    state: progressState, 
+    setAgeLevel, 
+    fetchDailyLaw, 
+    completeSignIn, 
+    hasSignedToday 
+  } = useTuobaoProgress();
+
+  const [showSigninModal, setShowSigninModal] = useState(false);
+  const [showAgeModal, setShowAgeModal] = useState(false);
+  const [isRecording, setIsRecording] = useState(false);
+  const [isRecorded, setIsRecorded] = useState(false);
+  const [recordBlob, setRecordBlob] = useState<Blob | null>(null);
+
   const sessionId = useMemo(() => getSessionId(), []);
 
   const load = useCallback(() => {
@@ -48,6 +66,45 @@ export function App() {
     document.documentElement.dataset.contrast = highContrast ? 'high' : 'normal';
     document.documentElement.dataset.motion = reduceMotion ? 'reduced' : 'full';
   }, [highContrast, reduceMotion]);
+
+  // 首次进入或切换地址时，检查强制打卡状态
+  useEffect(() => {
+    if (!progressState.userAgeLevel) {
+      setShowAgeModal(true);
+      return;
+    }
+
+    if (!hasSignedToday && !showAgeModal) {
+      setShowSigninModal(true);
+    }
+  }, [progressState.userAgeLevel, hasSignedToday, showAgeModal]);
+
+  // 模拟录音功能（DEMO版：仅做交互态处理，正式版接麦克风API）
+  const handleRecordToggle = () => {
+    if (isRecording) {
+      setIsRecording(false);
+      // 生成一个虚拟Blob代表录音完成
+      const fakeBlob = new Blob(['fake-audio-data'], { type: 'audio/mp3' });
+      setRecordBlob(fakeBlob);
+      setIsRecorded(true);
+      if (soundEnabled) speak('录音完成，打卡成功！');
+      return;
+    }
+    setIsRecording(true);
+  };
+
+  const handleCompleteSignin = () => {
+    if (recordBlob) {
+      completeSignIn(recordBlob);
+      setShowSigninModal(false);
+    }
+  };
+
+  const handleAgeSelect = (level: AgeLevel) => {
+    setAgeLevel(level);
+    setShowAgeModal(false);
+    setShowSigninModal(!hasSignedToday);
+  };
 
   function navigate(next: SectionId): void {
     stopSpeaking();
@@ -157,6 +214,103 @@ export function App() {
           onAccept={acceptGuardianGate}
           onCancel={() => setPendingSection(null)}
         />
+      )}
+
+      {/* 年龄选择弹窗 */}
+      {showAgeModal && (
+        <div className="dialog-backdrop" role="presentation">
+          <section className="guardian-dialog" role="dialog" aria-modal="true">
+            <h2>选择宝宝的年龄段</h2>
+            <p>系统将根据年龄段调整法条难度和游戏内容。</p>
+            <div className="guardian-points">
+              <button className="button button--primary" style={{width: '100%'}} onClick={() => handleAgeSelect('0-3')}>
+                0-3岁（家长陪同）
+              </button>
+              <button className="button button--soft" style={{width: '100%'}} onClick={() => handleAgeSelect('3-6')}>
+                3-6岁（托幼衔接）
+              </button>
+              <button className="button button--ghost" style={{width: '100%'}} onClick={() => handleAgeSelect('6-12')}>
+                6-12岁（社会模拟）
+              </button>
+            </div>
+          </section>
+        </div>
+      )}
+
+      {/* 强制每日法条打卡弹窗 */}
+      {showSigninModal && progressState.userAgeLevel && (
+        <div className="signin-backdrop" role="presentation">
+          <section className="signin-modal" role="dialog" aria-modal="true">
+            <button 
+              className="dialog-close signin-close" 
+              type="button" 
+              onClick={() => setShowSigninModal(false)}
+              aria-label="关闭"
+            >
+              <X />
+            </button>
+            
+            <div className="signin-title-row">
+              <span className="signin-title-badge" aria-hidden="true"><CheckCircle2 /></span>
+              <h2>今日普法签到</h2>
+            </div>
+            
+            <div className="law-tag">
+              <span className="law-tag__icon" aria-hidden="true">◫</span>
+              《托育法草案》{progressState.dailyLawArticleNo || '第18条'}
+            </div>
+            
+            <div className="law-content">
+              {progressState.dailyLawText || '《托育法草案》第18条，托育机构应当建立安全管理制度，保障婴幼儿人身安全。'}
+            </div>
+            
+            <div className="audio-cta">
+              <button 
+                className="audio-play-btn" 
+                onClick={() => speak(`《托育法草案》${progressState.dailyLawArticleNo || '第18条'}，${progressState.dailyLawText || '托育机构应当建立安全管理制度，保障婴幼儿人身安全。'}`)}
+                aria-label="播放标准朗读"
+              >
+                <Volume2 />
+              </button>
+              <span>播放朗读</span>
+            </div>
+            
+            <button 
+              className={`record-btn ${isRecording ? 'is-recording' : (isRecorded ? 'is-completed' : '')}`}
+              onClick={handleRecordToggle}
+              aria-label="开始或停止录音"
+            >
+              {isRecording ? <span style={{fontSize: '12px'}}>停止</span> : (isRecorded ? <CheckCircle2 /> : <Mic />)}
+            </button>
+            
+            <p className="signin-voice-guide">
+              点击开始朗读，请读出《托育法草案》{progressState.dailyLawArticleNo || '第18条'}以及条文内容
+            </p>
+            
+            <div className="signin-checkline">
+              <span className="signin-checkline__box" aria-hidden="true" />
+              <span>
+                {progressState.userAgeLevel === '0-3' ? '低龄小朋友，请家长陪同，完整读出法条编号与条文完成打卡' : 
+                 progressState.userAgeLevel === '3-6' ? '跟着音频，完整读出法条编号和条文内容' : 
+                 '独立朗读，记得把法条编号一起读出来'}
+              </span>
+            </div>
+
+            {isRecorded && (
+              <div className="signin-success-animation">
+                <Sparkles />
+              </div>
+            )}
+            
+            <button 
+              className="button button--primary signin-complete-btn"
+              disabled={!isRecorded}
+              onClick={handleCompleteSignin}
+            >
+              解锁今日游戏权限
+            </button>
+          </section>
+        </div>
       )}
     </div>
   );
