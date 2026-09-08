@@ -23,7 +23,14 @@ export interface GameChoice {
   id: string;
   label: string;
   isSafe: boolean;
+  isCorrect?: boolean;
   feedback: string;
+}
+
+export interface GameLesson {
+  title: string;
+  summary: string;
+  tips: string[];
 }
 
 export interface GameScene {
@@ -31,6 +38,7 @@ export interface GameScene {
   prompt: string;
   narration: string;
   illustration: string;
+  lesson?: GameLesson;
   choices: GameChoice[];
 }
 

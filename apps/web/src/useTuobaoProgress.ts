@@ -103,9 +103,10 @@ export function useTuobaoProgress() {
         return prev;
       }
 
+      const fallbackLaw = getDailyLawByAge(prev.userAgeLevel ?? '3-6');
       const todayLaw = prev.dailyLawArticleNo && prev.dailyLawText
         ? { articleNo: prev.dailyLawArticleNo, text: prev.dailyLawText }
-        : getDailyLawByAge(prev.userAgeLevel ?? '3-6');
+        : { articleNo: fallbackLaw.lawArticleNo, text: fallbackLaw.lawText };
 
       const isContinuous = prev.signLastDate === getYesterdayStr();
       const newContinuousDays = isContinuous ? prev.signContinuousDays + 1 : 1;

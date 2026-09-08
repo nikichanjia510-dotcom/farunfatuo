@@ -20,6 +20,10 @@ interface GameExperienceProps {
   onBack: () => void;
 }
 
+function isChoiceCorrect(choice: GameChoice): boolean {
+  return choice.isCorrect ?? choice.isSafe;
+}
+
 export function GameExperience({
   levels,
   sessionId,
@@ -61,9 +65,10 @@ export function GameExperience({
 
   function choose(choice: GameChoice): void {
     if (correctChoice) return;
+    const isCorrect = isChoiceCorrect(choice);
     setAttempts((value) => value + 1);
     setFeedback(choice.feedback);
-    setCorrectChoice(choice.isSafe);
+    setCorrectChoice(isCorrect);
     if (soundEnabled) speak(choice.feedback);
   }
 
@@ -167,6 +172,8 @@ export function GameExperience({
       (level) => level.id === activeLevel.id,
     );
     const hasNext = Boolean(sortedLevels[currentIndex + 1]);
+    const isFinalLevel = currentIndex === sortedLevels.length - 1;
+
     return (
       <section className="celebration page-shell" aria-labelledby="celebration-title">
         <div className="confetti" aria-hidden="true">✦ ✨ ★ ✦</div>
@@ -181,6 +188,24 @@ export function GameExperience({
           <span><Star /> {activeLevel.scenes.length} 颗成长星</span>
           <span><Sparkles /> 共尝试 {attempts} 次</span>
         </div>
+        {isFinalLevel && (
+          <div
+            style={{
+              marginTop: '1.25rem',
+              border: '1px solid rgba(52, 168, 83, 0.28)',
+              background: 'linear-gradient(135deg, rgba(147, 233, 167, 0.18), rgba(245, 249, 182, 0.18))',
+              borderRadius: '18px',
+              padding: '1rem 1.25rem',
+              display: 'grid',
+              gap: '0.4rem',
+              textAlign: 'left',
+            }}
+          >
+            <p style={{ margin: 0, fontSize: '0.75rem', letterSpacing: '0.08em', textTransform: 'uppercase', color: '#2c7a52' }}>Garden Unlock</p>
+            <h3 style={{ margin: 0, fontSize: '1.3rem', color: '#204b30' }}>花园已解锁：小花和小动物醒来了</h3>
+            <p style={{ margin: 0, color: '#2d4f3d' }}>🌼 🐰 🐼 你已经通过了今天的安全成长关卡，花园里的小花和小动物现在都能一起玩耍了。</p>
+          </div>
+        )}
         <p className="subtle" aria-live="polite">{saveStatus}</p>
         <div className="hero__actions">
           <button
@@ -242,19 +267,25 @@ export function GameExperience({
             <p className="eyebrow">和家长一起想一想</p>
             <h1>{scene.prompt}</h1>
             <div className="choice-list" aria-label="选择一个做法">
-              {scene.choices.map((choice, index) => (
-                <button
-                  type="button"
-                  key={choice.id}
-                  onClick={() => choose(choice)}
-                  disabled={correctChoice}
-                  className={correctChoice && choice.isSafe ? 'is-correct' : ''}
-                >
-                  <span>{String.fromCharCode(65 + index)}</span>
-                  {choice.label}
-                  {correctChoice && choice.isSafe && <CheckCircle2 />}
-                </button>
-              ))}
+              {scene.choices.map((choice, index) => {
+                const isCorrect = isChoiceCorrect(choice);
+                const showCorrectState = correctChoice && isCorrect;
+                const showWrongState = correctChoice && !isCorrect;
+
+                return (
+                  <button
+                    type="button"
+                    key={choice.id}
+                    onClick={() => choose(choice)}
+                    disabled={correctChoice}
+                    className={showCorrectState ? 'is-correct' : showWrongState ? 'is-wrong' : ''}
+                  >
+                    <span>{String.fromCharCode(65 + index)}</span>
+                    {choice.label}
+                    {showCorrectState && <CheckCircle2 />}
+                  </button>
+                );
+              })}
             </div>
             <div
               className={`feedback-callout ${correctChoice ? 'is-success' : ''}`}
@@ -263,6 +294,27 @@ export function GameExperience({
               <Mascot size="small" mood={correctChoice ? 'celebrate' : 'thinking'} />
               <p>{feedback || '选择后，托宝会温柔地告诉你为什么。'}</p>
             </div>
+            {correctChoice && scene.lesson && (
+              <div
+                style={{
+                  marginTop: '1rem',
+                  borderRadius: '16px',
+                  padding: '1rem 1.1rem',
+                  background: 'linear-gradient(135deg, rgba(255,243,214,0.9), rgba(227,245,255,0.9))',
+                  border: '1px solid rgba(245, 158, 11, 0.28)',
+                  color: '#334155',
+                }}
+              >
+                <p style={{ margin: '0 0 0.4rem', letterSpacing: '0.08em', textTransform: 'uppercase', fontWeight: 700, color: '#c7740d' }}>儿童法律小课堂</p>
+                <h3 style={{ margin: '0 0 0.3rem', fontSize: '1.2rem', color: '#1f2937' }}>{scene.lesson.title}</h3>
+                <p style={{ margin: '0 0 0.5rem', lineHeight: 1.6 }}>{scene.lesson.summary}</p>
+                <ul style={{ margin: 0, paddingLeft: '1.2rem', display: 'grid', gap: '0.25rem' }}>
+                  {scene.lesson.tips.map((tip) => (
+                    <li key={tip}>{tip}</li>
+                  ))}
+                </ul>
+              </div>
+            )}
             {correctChoice && (
               <button
                 type="button"

@@ -557,6 +557,116 @@ select:focus-visible {
   gap: 22px;
 }
 
+.news-section {
+  padding-top: 24px;
+}
+
+.news-heading {
+  margin-bottom: 18px;
+}
+
+.news-slider {
+  display: flex;
+  gap: 22px;
+  overflow-x: auto;
+  padding: 8px 4px 18px;
+  scroll-snap-type: x proximity;
+}
+
+.news-slider::-webkit-scrollbar {
+  height: 10px;
+}
+
+.news-slider::-webkit-scrollbar-thumb {
+  border-radius: 999px;
+  background: rgba(48, 110, 92, 0.2);
+}
+
+.news-card {
+  position: relative;
+  flex: 0 0 360px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border: 3px solid rgba(70, 55, 45, 0.8);
+  border-radius: 28px;
+  background: #fffdf8;
+  box-shadow: 0 18px 32px rgb(54 76 89 / 12%);
+  scroll-snap-align: start;
+  text-decoration: none;
+  color: inherit;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.news-card:hover {
+  transform: translateY(-4px) scale(1.01);
+  box-shadow: 0 26px 42px rgb(54 76 89 / 16%);
+}
+
+.news-card__image-wrap {
+  position: relative;
+  height: 230px;
+  overflow: hidden;
+  border-radius: 24px 24px 0 0;
+}
+
+.news-card__image-wrap img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+  background: #f4efe8;
+}
+
+.news-card__overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(17, 24, 39, 0.08), rgba(17, 24, 39, 0.34));
+}
+
+.news-card__tag {
+  position: absolute;
+  left: 16px;
+  top: 16px;
+  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  padding: 7px 12px;
+  border: 1px solid rgba(60, 72, 80, 0.2);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.82);
+  color: var(--mint-dark);
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+}
+
+.news-card__body {
+  display: none;
+}
+
+.news-card__title-overlay {
+  position: absolute;
+  left: 18px;
+  right: 18px;
+  bottom: 18px;
+  z-index: 1;
+  font-size: clamp(1.3rem, 2vw, 2rem);
+  line-height: 1.28;
+  font-weight: 900;
+  letter-spacing: 0.02em;
+  color: #f9fbff;
+  text-shadow: 0 4px 18px rgb(35 42 56 / 26%);
+  word-break: break-word;
+}
+
+.news-card h3 {
+  margin: 0;
+  font-size: 1.08rem;
+  line-height: 1.55;
+  color: var(--ink);
+}
+
 .feature-card {
   min-height: 300px;
   padding: 32px;

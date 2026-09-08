@@ -9,6 +9,12 @@ import {
 } from 'lucide-react';
 import { Mascot } from './Mascot';
 
+interface NewsItem {
+  title: string;
+  href: string;
+  cover: string;
+}
+
 interface HomePageProps {
   levelCount: number;
   knowledgeCount: number;
@@ -16,6 +22,93 @@ interface HomePageProps {
   onStartAssistant: () => void;
   onOpenSources: () => void;
 }
+
+function buildNewsCover(title: string, accent: string): string {
+  const safeTitle = title
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&apos;');
+
+  const lines = safeTitle.length > 12 ? [safeTitle.slice(0, 12), safeTitle.slice(12)].join('\n') : safeTitle;
+
+  return `data:image/svg+xml;charset=UTF-8,${encodeURIComponent(`
+    <svg xmlns="http://www.w3.org/2000/svg" width="640" height="400" viewBox="0 0 640 400">
+      <defs>
+        <linearGradient id="bg" x1="0" x2="1" y1="0" y2="1">
+          <stop offset="0%" stop-color="#f8f5ee"/>
+          <stop offset="100%" stop-color="#f5efea"/>
+        </linearGradient>
+      </defs>
+      <rect width="640" height="400" rx="36" fill="url(#bg)"/>
+      <circle cx="90" cy="80" r="48" fill="${accent}" opacity="0.18"/>
+      <circle cx="560" cy="310" r="62" fill="${accent}" opacity="0.14"/>
+      <path d="M32 300 C 140 225, 220 355, 342 280 S 510 210, 606 250" fill="none" stroke="${accent}" stroke-width="12" stroke-linecap="round" opacity="0.42"/>
+      <rect x="72" y="64" width="496" height="272" rx="34" fill="rgba(255,255,255,0.26)"/>
+      <g fill="#fff" font-family="Microsoft YaHei, PingFang SC, sans-serif" font-weight="700">
+        <text x="50%" y="53%" text-anchor="middle" font-size="34" opacity="0.9">${lines.split('\n')[0] || '托宝'}</text>
+        <text x="50%" y="63%" text-anchor="middle" font-size="34" opacity="0.9">${lines.split('\n')[1] || '家长科普'}</text>
+      </g>
+      <g fill="${accent}" font-family="Microsoft YaHei, PingFang SC, sans-serif" font-weight="700">
+        <text x="50%" y="75%" text-anchor="middle" font-size="24" opacity="0.75">家长科普文</text>
+      </g>
+    </svg>
+  `)}`;
+}
+
+const newsItems: NewsItem[] = [
+  {
+    title: '【家长科普文】第1期：“托育”是什么？',
+    href: 'https://mp.weixin.qq.com/s/zSvYAgOHOJBL7nfu5AJDoQ',
+    cover: buildNewsCover('【家长科普文】第1期：“托育”是什么？', '#f7b267'),
+  },
+  {
+    title: '【家长科普文】第2期（上）：送孩子去托育机构前，家长通常会关心哪些问题？',
+    href: 'https://mp.weixin.qq.com/s/-KzdW11JzVp_W5QEMBZsYw',
+    cover: buildNewsCover('【家长科普文】第2期（上）', '#7ec8a0'),
+  },
+  {
+    title: '【家长科普文】第3期（上）：送孩子去托育机构前，家长通常会关心哪些问题？',
+    href: 'https://mp.weixin.qq.com/s/XAPnO6kRBm6bWApURbpK4w',
+    cover: buildNewsCover('【家长科普文】第3期（上）', '#f29bb2'),
+  },
+  {
+    title: '托育纠纷的处理途径',
+    href: 'https://mp.weixin.qq.com/s/QWfluEUQiCGGCc1EWfoRDg',
+    cover: buildNewsCover('托育纠纷的处理途径', '#7cc8ff'),
+  },
+  {
+    title: '【家长科普文】第2期（下）：送孩子去托育机构前，家长通常会关心哪些问题？',
+    href: 'https://mp.weixin.qq.com/s/l7nefxOJmMHYzrnYd2DhXQ',
+    cover: buildNewsCover('【家长科普文】第2期（下）', '#ffc857'),
+  },
+  {
+    title: '【家长科普文】第3期（下）：托育机构的安全与健康管理',
+    href: 'https://mp.weixin.qq.com/s/qErhnReN3coDFy7LcTpSnA',
+    cover: buildNewsCover('【家长科普文】第3期（下）', '#9ad0c2'),
+  },
+  {
+    title: '【家长科普文】第5期：家庭衔接篇：把托育好习惯“搬”回家',
+    href: 'https://mp.weixin.qq.com/s/OWfX97J92n4eVZyxskequQ',
+    cover: buildNewsCover('【家长科普文】第5期', '#f2b5d4'),
+  },
+  {
+    title: '【家长科普文】第6期：托育机构资质线上查，家长选机构“关键信息”别漏看！',
+    href: 'https://mp.weixin.qq.com/s/3Ou8sigVEE3BAa1DA4N74A',
+    cover: buildNewsCover('【家长科普文】第6期', '#b8d7f8'),
+  },
+  {
+    title: '【家长科普文】第7期：托育机构的健康指南',
+    href: 'https://mp.weixin.qq.com/s/zHdpLEx0E1iMM1phyI1n1Q',
+    cover: buildNewsCover('【家长科普文】第7期', '#f0b98f'),
+  },
+  {
+    title: '【家长科普文】第8期：分离焦虑篇：不止是孩子的哭，更是家长的修行',
+    href: 'https://mp.weixin.qq.com/s/dA6LjbgPz6E2pTQOQUA2jQ',
+    cover: buildNewsCover('【家长科普文】第8期', '#9bc1bc'),
+  },
+];
 
 export function HomePage({
   levelCount,
@@ -81,6 +174,31 @@ export function HomePage({
             <strong>24h</strong>
             <span>离线知识可用</span>
           </div>
+        </div>
+      </section>
+
+      <section className="news-section page-shell" aria-labelledby="news-title">
+        <div className="section-heading section-heading--left news-heading">
+          <p className="eyebrow">家长科普与资讯</p>
+          <h2 id="news-title">托宝精选文章</h2>
+        </div>
+        <div className="news-slider" aria-label="托宝新闻资讯列表">
+          {newsItems.map((item) => (
+            <a
+              key={item.href}
+              className="news-card"
+              href={item.href}
+              target="_blank"
+              rel="noreferrer"
+            >
+              <div className="news-card__image-wrap">
+                <img src={item.cover} alt={item.title} />
+                <div className="news-card__overlay" aria-hidden="true" />
+                <span className="news-card__tag">家长科普</span>
+                <div className="news-card__title-overlay">{item.title}</div>
+              </div>
+            </a>
+          ))}
         </div>
       </section>
 

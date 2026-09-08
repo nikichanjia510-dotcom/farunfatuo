@@ -1,5 +1,5 @@
 // apps/web/src/App.tsx
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { AlertTriangle, LoaderCircle, RefreshCcw, X, Mic, Volume2, CheckCircle2, Sparkles } from 'lucide-react';
 import { fetchBootstrap, getSessionId } from './api';
 import { AdminPanel } from './components/AdminPanel';
@@ -13,7 +13,7 @@ import { SourcesPanel } from './components/SourcesPanel';
 import { VideoPlaceholder } from './components/VideoPlaceholder';
 import { stopSpeaking, speak } from './speech';
 import type { BootstrapContent, SectionId } from './types';
-import { useTuobaoProgress, type AgeLevel } from './useTuobaoProgress'; // 导入新Hook
+import { useTuobaoProgress, type AgeLevel } from './useTuobaoProgress';
 
 const protectedSections = new Set<SectionId>(['game', 'assistant']);
 
@@ -45,8 +45,20 @@ export function App() {
   const [isRecording, setIsRecording] = useState(false);
   const [isRecorded, setIsRecorded] = useState(false);
   const [recordBlob, setRecordBlob] = useState<Blob | null>(null);
+  const [recordUrl, setRecordUrl] = useState<string | null>(null);
+  const recorderRef = useRef<MediaRecorder | null>(null);
+  const mediaStreamRef = useRef<MediaStream | null>(null);
 
   const sessionId = useMemo(() => getSessionId(), []);
+
+  useEffect(() => {
+    return () => {
+      if (recordUrl) URL.revokeObjectURL(recordUrl);
+      if (mediaStreamRef.current) {
+        mediaStreamRef.current.getTracks().forEach((track) => track.stop());
+      }
+    };
+  }, [recordUrl]);
 
   const load = useCallback(() => {
     setLoadError('');
@@ -79,18 +91,69 @@ export function App() {
     }
   }, [progressState.userAgeLevel, hasSignedToday, showAgeModal]);
 
-  // 模拟录音功能（DEMO版：仅做交互态处理，正式版接麦克风API）
-  const handleRecordToggle = () => {
+  const handleRecordToggle = async () => {
     if (isRecording) {
+      if (recorderRef.current && recorderRef.current.state !== 'inactive') {
+        recorderRef.current.stop();
+      }
+      if (mediaStreamRef.current) {
+        mediaStreamRef.current.getTracks().forEach((track) => track.stop());
+      }
       setIsRecording(false);
-      // 生成一个虚拟Blob代表录音完成
-      const fakeBlob = new Blob(['fake-audio-data'], { type: 'audio/mp3' });
-      setRecordBlob(fakeBlob);
-      setIsRecorded(true);
-      if (soundEnabled) speak('录音完成，打卡成功！');
       return;
     }
-    setIsRecording(true);
+
+    try {
+      if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia || typeof MediaRecorder === 'undefined') {
+        const fallbackBlob = new Blob(['fake-audio-data'], { type: 'audio/mp3' });
+        const fallbackUrl = URL.createObjectURL(fallbackBlob);
+        setRecordBlob(fallbackBlob);
+        setRecordUrl((previous) => {
+          if (previous) URL.revokeObjectURL(previous);
+          return fallbackUrl;
+        });
+        setIsRecorded(true);
+        if (soundEnabled) speak('录音完成，打卡成功！');
+        return;
+      }
+
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      mediaStreamRef.current = stream;
+      const chunks: BlobPart[] = [];
+      const recorder = new MediaRecorder(stream);
+      recorderRef.current = recorder;
+
+      recorder.ondataavailable = (event) => {
+        if (event.data.size > 0) chunks.push(event.data);
+      };
+
+      recorder.onstop = () => {
+        const blob = new Blob(chunks, { type: recorder.mimeType || 'audio/webm' });
+        const nextUrl = URL.createObjectURL(blob);
+
+        setRecordBlob(blob);
+        setRecordUrl((previous) => {
+          if (previous) URL.revokeObjectURL(previous);
+          return nextUrl;
+        });
+        setIsRecorded(true);
+        if (soundEnabled) speak('录音完成，打卡成功！');
+      };
+
+      recorder.start();
+      setIsRecording(true);
+      setIsRecorded(false);
+    } catch {
+      const fallbackBlob = new Blob(['fake-audio-data'], { type: 'audio/mp3' });
+      const fallbackUrl = URL.createObjectURL(fallbackBlob);
+      setRecordBlob(fallbackBlob);
+      setRecordUrl((previous) => {
+        if (previous) URL.revokeObjectURL(previous);
+        return fallbackUrl;
+      });
+      setIsRecorded(true);
+      if (soundEnabled) speak('无法访问麦克风，已使用演示录音。');
+    }
   };
 
   const handleCompleteSignin = () => {
@@ -296,9 +359,12 @@ export function App() {
               </span>
             </div>
 
-            {isRecorded && (
-              <div className="signin-success-animation">
-                <Sparkles />
+            {isRecorded && recordUrl && (
+              <div style={{ marginTop: '0.9rem', display: 'grid', gap: '0.35rem' }}>
+                <audio controls src={recordUrl} style={{ width: '100%' }} />
+                <div className="signin-success-animation">
+                  <Sparkles />
+                </div>
               </div>
             )}
             
