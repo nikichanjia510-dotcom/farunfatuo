@@ -238,6 +238,7 @@ export function App() {
         {section === 'game' && (
           <GameExperience
             levels={content.levels}
+            ageLevel={progressState.userAgeLevel ?? '3-6'}
             sessionId={sessionId}
             soundEnabled={soundEnabled}
             onBack={() => navigate('home')}

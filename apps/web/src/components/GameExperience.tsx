@@ -15,6 +15,7 @@ import { Mascot } from './Mascot';
 
 interface GameExperienceProps {
   levels: GameLevel[];
+  ageLevel: GameLevel['ageLevel'];
   sessionId: string;
   soundEnabled: boolean;
   onBack: () => void;
@@ -26,6 +27,7 @@ function isChoiceCorrect(choice: GameChoice): boolean {
 
 export function GameExperience({
   levels,
+  ageLevel,
   sessionId,
   soundEnabled,
   onBack,
@@ -39,10 +41,31 @@ export function GameExperience({
   const [showCelebration, setShowCelebration] = useState(false);
   const [saveStatus, setSaveStatus] = useState('');
   const startedAt = useRef(Date.now());
+  const progressHydrated = useRef(false);
+
+  const progressKey = `tuobao-game-progress-${ageLevel}`;
+
+  useEffect(() => {
+    try {
+      const stored = localStorage.getItem(progressKey);
+      if (stored) setCompletedLevels(JSON.parse(stored) as string[]);
+    } catch {
+      setCompletedLevels([]);
+    }
+    progressHydrated.current = true;
+  }, [progressKey]);
+
+  useEffect(() => {
+    if (progressHydrated.current) {
+      localStorage.setItem(progressKey, JSON.stringify(completedLevels));
+    }
+  }, [completedLevels, progressKey]);
 
   const sortedLevels = useMemo(
-    () => [...levels].sort((left, right) => left.order - right.order),
-    [levels],
+    () => levels
+      .filter((level) => level.ageLevel === ageLevel)
+      .sort((left, right) => left.order - right.order),
+    [ageLevel, levels],
   );
   const activeLevel = sortedLevels.find((level) => level.id === activeLevelId);
   const scene = activeLevel?.scenes[sceneIndex];
@@ -75,9 +98,13 @@ export function GameExperience({
   function finishLevel(): void {
     if (!activeLevel) return;
     const durationMs = Date.now() - startedAt.current;
-    setCompletedLevels((current) =>
-      current.includes(activeLevel.id) ? current : [...current, activeLevel.id],
-    );
+    setCompletedLevels((current) => {
+      const next = current.includes(activeLevel.id)
+        ? current
+        : [...current, activeLevel.id];
+      localStorage.setItem(progressKey, JSON.stringify(next));
+      return next;
+    });
     setShowCelebration(true);
     setSaveStatus('正在保存匿名关卡结果…');
     void saveGameResult({
@@ -124,10 +151,39 @@ export function GameExperience({
         <div className="experience-heading">
           <div>
             <p className="eyebrow">托宝成长乐园</p>
-            <h1 id="game-title">选一个今天想练习的安全本领</h1>
-            <p>所有关卡都没有倒计时，也不会因为答错扣分。</p>
+            <h1 id="game-title">{ageLevel === '6-12' ? '星星托育园案件 DEMO' : '选一个今天想练习的安全本领'}</h1>
+            <p>{ageLevel === '6-12' ? '通过职业卡牌，了解线索、证据、法条和整改如何连接起来。' : '所有关卡都没有倒计时，也不会因为答错扣分。'}</p>
           </div>
           <Mascot size="medium" />
+        </div>
+        {ageLevel === '6-12' && (
+          <article className="case-demo-intro">
+            <p className="eyebrow">6–12 岁试玩版</p>
+            <h2>从发现问题到完成整改</h2>
+            <p>当前 DEMO 开放 4 个主线职业：托育老师、受害家长、卫健执法检查员、未成年人检察官。其余职业先以卡牌预览形式保留，完整办案流程将在后续版本开放。</p>
+            <div className="case-demo-intro__roles" aria-label="已开放职业">
+              <span>👩‍🏫 托育老师</span>
+              <span>👨‍👩‍👧 受害家长</span>
+              <span>🧑‍⚕️ 卫健执法检查员</span>
+              <span>⚖️ 未成年人检察官</span>
+            </div>
+          </article>
+        )}
+        <div className="garden-progress" aria-label="托宝花园成长进度">
+          <div>
+            <strong>托宝花园</strong>
+            <span>已解锁 {completedLevels.length} / {sortedLevels.length} 关</span>
+          </div>
+          <div className="garden-progress__tokens" aria-hidden="true">
+            {Array.from({ length: Math.min(sortedLevels.length, 12) }, (_, index) => (
+              <span key={index} className={index < completedLevels.length ? 'is-unlocked' : ''}>
+                {index < completedLevels.length ? '🌼' : '·'}
+              </span>
+            ))}
+          </div>
+          {ageLevel === '3-6' && completedLevels.length >= 4 && <span>🐰 小兔子已解锁</span>}
+          {ageLevel === '3-6' && completedLevels.length >= 8 && <span>🐱 小猫咪已解锁</span>}
+          {ageLevel === '3-6' && completedLevels.length >= 12 && <span>🌈 彩虹花园与证书已解锁</span>}
         </div>
         <div className="level-grid">
           {sortedLevels.map((level) => {

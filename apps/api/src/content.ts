@@ -35,6 +35,7 @@ const gameSchema = z.object({
   levels: z.array(
     z.object({
       id: z.string().regex(/^[a-z0-9-]+$/),
+      ageLevel: z.enum(['0-3', '3-6', '6-12']),
       order: z.number().int().positive(),
       title: z.string().min(1),
       shortTitle: z.string().min(1),
@@ -48,12 +49,18 @@ const gameSchema = z.object({
           prompt: z.string().min(1),
           narration: z.string().min(1),
           illustration: z.string().min(1),
+          lesson: z.object({
+            title: z.string().min(1),
+            summary: z.string().min(1),
+            tips: z.array(z.string().min(1)).min(1),
+          }).optional(),
           choices: z
             .array(
               z.object({
                 id: z.string().min(1),
                 label: z.string().min(1),
                 isSafe: z.boolean(),
+                isCorrect: z.boolean().optional(),
                 feedback: z.string().min(1),
               }),
             )
@@ -72,19 +79,24 @@ export function loadContent(contentRoot = defaultContentRoot): ContentBundle {
   const gamesRaw: unknown = JSON.parse(
     readFileSync(resolve(contentRoot, 'game-levels.json'), 'utf8'),
   );
+  const expandedGamesRaw: unknown = JSON.parse(
+    readFileSync(resolve(contentRoot, 'game-levels-expanded.json'), 'utf8'),
+  );
   const knowledgeRaw: unknown = JSON.parse(
     readFileSync(resolve(contentRoot, 'knowledge-base.json'), 'utf8'),
   );
 
   const games = gameSchema.parse(gamesRaw);
+  const expandedGames = gameSchema.parse(expandedGamesRaw);
   const knowledge = knowledgeSchema.parse(knowledgeRaw);
   const approvedKnowledge = knowledge.items.filter(
     (item) => item.reviewStatus === 'approved',
   );
   const approvedIds = new Set(approvedKnowledge.map((item) => item.id));
+  const allLevels = [...games.levels, ...expandedGames.levels];
   const levels =
-    games.reviewStatus === 'approved'
-      ? games.levels.filter((level) =>
+    games.reviewStatus === 'approved' && expandedGames.reviewStatus === 'approved'
+      ? allLevels.filter((level) =>
           level.sourceKnowledgeIds.every((id) => approvedIds.has(id)),
         )
       : [];

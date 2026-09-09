@@ -1,4 +1,5 @@
 export type Audience = 'child' | 'guardian';
+export type AgeLevel = '0-3' | '3-6' | '6-12';
 
 export interface ContentSource {
   title: string;
@@ -23,7 +24,14 @@ export interface GameChoice {
   id: string;
   label: string;
   isSafe: boolean;
+  isCorrect?: boolean | undefined;
   feedback: string;
+}
+
+export interface GameLesson {
+  title: string;
+  summary: string;
+  tips: string[];
 }
 
 export interface GameScene {
@@ -31,11 +39,13 @@ export interface GameScene {
   prompt: string;
   narration: string;
   illustration: string;
+  lesson?: GameLesson | undefined;
   choices: GameChoice[];
 }
 
 export interface GameLevel {
   id: string;
+  ageLevel: AgeLevel;
   order: number;
   title: string;
   shortTitle: string;

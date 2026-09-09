@@ -1,4 +1,5 @@
 export type Audience = 'child' | 'guardian';
+export type AgeLevel = '0-3' | '3-6' | '6-12';
 
 export interface ContentSource {
   title: string;
@@ -44,6 +45,7 @@ export interface GameScene {
 
 export interface GameLevel {
   id: string;
+  ageLevel: AgeLevel;
   order: number;
   title: string;
   shortTitle: string;

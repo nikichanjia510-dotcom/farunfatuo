@@ -10,6 +10,7 @@ vi.mock('../api', () => ({
 
 const level: GameLevel = {
   id: 'test-level',
+  ageLevel: '3-6',
   order: 1,
   title: '测试安全关卡',
   shortTitle: '会选择',
@@ -41,6 +42,7 @@ describe('GameExperience', () => {
     render(
       <GameExperience
         levels={[level]}
+        ageLevel="3-6"
         sessionId="session-test-123"
         soundEnabled={false}
         onBack={() => undefined}

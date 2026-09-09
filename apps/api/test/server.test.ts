@@ -27,7 +27,13 @@ describe('public API', () => {
       url: '/api/content/bootstrap',
     });
     expect(bootstrap.statusCode).toBe(200);
-    expect(bootstrap.json().levels).toHaveLength(3);
+    expect(bootstrap.json().levels).toHaveLength(24);
+    expect(
+      bootstrap.json().levels.filter((level: { ageLevel: string }) => level.ageLevel === '0-3'),
+    ).toHaveLength(12);
+    expect(
+      bootstrap.json().levels.filter((level: { ageLevel: string }) => level.ageLevel === '3-6'),
+    ).toHaveLength(12);
     expect(
       bootstrap.json().knowledge.every(
         (item: { reviewStatus: string }) => item.reviewStatus === 'approved',

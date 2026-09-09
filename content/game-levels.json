@@ -4,6 +4,7 @@
   "levels": [
     {
       "id": "safe-nursery",
+      "ageLevel": "3-6",
       "order": 1,
       "title": "安全托育小侦探",
       "shortTitle": "找安全",
@@ -130,6 +131,7 @@
     },
     {
       "id": "body-boundaries",
+      "ageLevel": "3-6",
       "order": 2,
       "title": "身体边界小卫士",
       "shortTitle": "会表达",
@@ -256,6 +258,7 @@
     },
     {
       "id": "trusted-help",
+      "ageLevel": "3-6",
       "order": 3,
       "title": "可信求助向导",
       "shortTitle": "会求助",
