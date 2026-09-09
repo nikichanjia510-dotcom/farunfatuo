@@ -1,4 +1,5 @@
 import {
+  Baby,
   BookOpenText,
   Bot,
   ClipboardCheck,
@@ -11,6 +12,7 @@ import {
   VolumeX,
 } from 'lucide-react';
 import type { SectionId } from '../types';
+import type { AgeLevel } from '../useTuobaoProgress';
 
 interface HeaderProps {
   activeSection: SectionId;
@@ -21,6 +23,8 @@ interface HeaderProps {
   onToggleContrast: () => void;
   reduceMotion: boolean;
   onToggleMotion: () => void;
+  ageLevel: AgeLevel | null;
+  onChangeAge: () => void;
 }
 
 const navigation: Array<{
@@ -45,7 +49,11 @@ export function Header({
   onToggleContrast,
   reduceMotion,
   onToggleMotion,
+  ageLevel,
+  onChangeAge,
 }: HeaderProps) {
+  const ageLabel = ageLevel ? `${ageLevel} 岁` : '选择年龄';
+
   return (
     <header className="site-header">
       <div className="site-header__top page-shell">
@@ -64,6 +72,16 @@ export function Header({
           </span>
         </button>
         <div className="accessibility-tools" aria-label="阅读辅助设置">
+          <button
+            type="button"
+            className="age-switch"
+            onClick={onChangeAge}
+            aria-label={`切换年龄段，当前${ageLabel}`}
+            title="切换年龄段"
+          >
+            <Baby aria-hidden="true" />
+            <span><small>当前年龄段</small><strong>{ageLabel}</strong></span>
+          </button>
           <button
             type="button"
             className="icon-button"

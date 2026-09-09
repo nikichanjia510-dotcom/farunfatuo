@@ -5,6 +5,7 @@ import { fetchBootstrap, getSessionId } from './api';
 import { AdminPanel } from './components/AdminPanel';
 import { AssistantPanel } from './components/AssistantPanel';
 import { FeedbackPanel } from './components/FeedbackPanel';
+import { Age612Game } from './components/Age612Game';
 import { GameExperience } from './components/GameExperience';
 import { GuardianGate } from './components/GuardianGate';
 import { Header } from './components/Header';
@@ -48,6 +49,7 @@ export function App() {
   const [recordUrl, setRecordUrl] = useState<string | null>(null);
   const recorderRef = useRef<MediaRecorder | null>(null);
   const mediaStreamRef = useRef<MediaStream | null>(null);
+  const ageSelectorWasManualRef = useRef(false);
 
   const sessionId = useMemo(() => getSessionId(), []);
 
@@ -87,6 +89,10 @@ export function App() {
     }
 
     if (!hasSignedToday && !showAgeModal) {
+      if (ageSelectorWasManualRef.current) {
+        ageSelectorWasManualRef.current = false;
+        return;
+      }
       setShowSigninModal(true);
     }
   }, [progressState.userAgeLevel, hasSignedToday, showAgeModal]);
@@ -164,6 +170,7 @@ export function App() {
   };
 
   const handleAgeSelect = (level: AgeLevel) => {
+    ageSelectorWasManualRef.current = false;
     setAgeLevel(level);
     setShowAgeModal(false);
     setShowSigninModal(!hasSignedToday);
@@ -224,6 +231,13 @@ export function App() {
         onToggleContrast={() => setHighContrast((value) => !value)}
         reduceMotion={reduceMotion}
         onToggleMotion={() => setReduceMotion((value) => !value)}
+        ageLevel={progressState.userAgeLevel}
+        onChangeAge={() => {
+          stopSpeaking();
+          ageSelectorWasManualRef.current = true;
+          setShowSigninModal(false);
+          setShowAgeModal(true);
+        }}
       />
       <main id="main-content">
         {section === 'home' && (
@@ -235,7 +249,14 @@ export function App() {
             onOpenSources={() => navigate('sources')}
           />
         )}
-        {section === 'game' && (
+        {section === 'game' && progressState.userAgeLevel === '6-12' && (
+          <Age612Game
+            sessionId={sessionId}
+            soundEnabled={soundEnabled}
+            onBack={() => navigate('home')}
+          />
+        )}
+        {section === 'game' && progressState.userAgeLevel !== '6-12' && (
           <GameExperience
             levels={content.levels}
             ageLevel={progressState.userAgeLevel ?? '3-6'}
@@ -283,18 +304,31 @@ export function App() {
       {/* 年龄选择弹窗 */}
       {showAgeModal && (
         <div className="dialog-backdrop" role="presentation">
-          <section className="guardian-dialog" role="dialog" aria-modal="true">
-            <h2>选择宝宝的年龄段</h2>
-            <p>系统将根据年龄段调整法条难度和游戏内容。</p>
+          <section className="guardian-dialog age-dialog" role="dialog" aria-modal="true" aria-labelledby="age-dialog-title">
+            {progressState.userAgeLevel && (
+              <button
+                className="dialog-close"
+                type="button"
+                onClick={() => setShowAgeModal(false)}
+                aria-label="关闭年龄选择"
+              >
+                <X />
+              </button>
+            )}
+            <h2 id="age-dialog-title">选择体验年龄段</h2>
+            <p>切换后会立即调整普法表达和成长游戏，不会清除各年龄段已保存的游戏进度。</p>
             <div className="guardian-points">
-              <button className="button button--primary" style={{width: '100%'}} onClick={() => handleAgeSelect('0-3')}>
-                0-3岁（家长陪同）
+              <button className={`button age-option ${progressState.userAgeLevel === '0-3' ? 'is-current' : ''}`} aria-pressed={progressState.userAgeLevel === '0-3'} onClick={() => handleAgeSelect('0-3')}>
+                <span><strong>0–3 岁</strong><small>家长陪同</small></span>
+                {progressState.userAgeLevel === '0-3' && <em>当前</em>}
               </button>
-              <button className="button button--soft" style={{width: '100%'}} onClick={() => handleAgeSelect('3-6')}>
-                3-6岁（托幼衔接）
+              <button className={`button age-option ${progressState.userAgeLevel === '3-6' ? 'is-current' : ''}`} aria-pressed={progressState.userAgeLevel === '3-6'} onClick={() => handleAgeSelect('3-6')}>
+                <span><strong>3–6 岁</strong><small>托幼衔接</small></span>
+                {progressState.userAgeLevel === '3-6' && <em>当前</em>}
               </button>
-              <button className="button button--ghost" style={{width: '100%'}} onClick={() => handleAgeSelect('6-12')}>
-                6-12岁（社会模拟）
+              <button className={`button age-option ${progressState.userAgeLevel === '6-12' ? 'is-current' : ''}`} aria-pressed={progressState.userAgeLevel === '6-12'} onClick={() => handleAgeSelect('6-12')}>
+                <span><strong>6–12 岁</strong><small>社会模拟</small></span>
+                {progressState.userAgeLevel === '6-12' && <em>当前</em>}
               </button>
             </div>
           </section>
