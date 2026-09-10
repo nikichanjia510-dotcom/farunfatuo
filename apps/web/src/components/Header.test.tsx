@@ -11,7 +11,7 @@ describe('Header age switch', () => {
     const user = userEvent.setup();
     render(
       <Header
-        activeSection="home"
+        activeSection="game"
         onNavigate={() => undefined}
         soundEnabled={false}
         onToggleSound={() => undefined}
@@ -26,7 +26,27 @@ describe('Header age switch', () => {
 
     const switchButton = screen.getByRole('button', { name: /切换年龄段，当前6-12 岁/ });
     expect(switchButton).toBeVisible();
+    expect(document.querySelector('.site-header--compact-game')).toBeInTheDocument();
     await user.click(switchButton);
     expect(onChangeAge).toHaveBeenCalledOnce();
+  });
+
+  it('keeps the regular header for the younger game', () => {
+    render(
+      <Header
+        activeSection="game"
+        onNavigate={() => undefined}
+        soundEnabled={false}
+        onToggleSound={() => undefined}
+        highContrast={false}
+        onToggleContrast={() => undefined}
+        reduceMotion={false}
+        onToggleMotion={() => undefined}
+        ageLevel="3-6"
+        onChangeAge={() => undefined}
+      />,
+    );
+
+    expect(document.querySelector('.site-header--compact-game')).not.toBeInTheDocument();
   });
 });

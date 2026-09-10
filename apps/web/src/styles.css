@@ -241,6 +241,11 @@ select:focus-visible {
   backdrop-filter: blur(18px);
 }
 
+.site-header__inner {
+  width: min(1180px, calc(100% - 40px));
+  margin-inline: auto;
+}
+
 .site-header__top {
   min-height: 76px;
   display: flex;
@@ -396,6 +401,102 @@ select:focus-visible {
 .main-nav button.is-active {
   color: var(--coral-dark);
   border-bottom-color: var(--coral);
+}
+
+@media (min-width: 720px) {
+  .site-header--compact-game .site-header__inner {
+    min-height: 68px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+
+  .site-header--compact-game .site-header__top {
+    display: contents;
+  }
+
+  .site-header--compact-game .brand {
+    flex: 0 0 auto;
+    order: 1;
+    min-height: 48px;
+  }
+
+  .site-header--compact-game .brand__mark {
+    width: 40px;
+    height: 40px;
+    border-radius: 14px 14px 14px 5px;
+  }
+
+  .site-header--compact-game .brand small {
+    display: none;
+  }
+
+  .site-header--compact-game .main-nav {
+    flex: 1 1 auto;
+    order: 2;
+    min-width: 0;
+    min-height: 66px;
+  }
+
+  .site-header--compact-game .main-nav button {
+    min-height: 62px;
+    gap: 5px;
+    padding: 7px 9px;
+    font-size: 0.78rem;
+  }
+
+  .site-header--compact-game .main-nav button svg {
+    width: 16px;
+    height: 16px;
+  }
+
+  .site-header--compact-game .accessibility-tools {
+    flex: 0 0 auto;
+    order: 3;
+    gap: 6px;
+  }
+
+  .site-header--compact-game .age-switch,
+  .site-header--compact-game .icon-button,
+  .site-header--compact-game .motion-toggle {
+    min-height: 42px;
+  }
+
+  .site-header--compact-game .age-switch {
+    padding-inline: 10px;
+  }
+
+  .site-header--compact-game .age-switch > svg,
+  .site-header--compact-game .age-switch small {
+    display: none;
+  }
+
+  .site-header--compact-game .age-switch strong {
+    margin: 0;
+    font-size: 0.74rem;
+  }
+
+  .site-header--compact-game .icon-button {
+    min-width: 42px;
+  }
+
+  .site-header--compact-game .motion-toggle {
+    display: none;
+  }
+}
+
+@media (min-width: 720px) and (max-width: 1199px) {
+  .site-header--compact-game .brand > span:not(.brand__mark) {
+    display: none;
+  }
+}
+
+@media (min-width: 1200px) {
+  .site-header--compact-game .motion-toggle {
+    display: inline-flex;
+    padding-inline: 10px;
+    font-size: 0.7rem;
+  }
 }
 
 .hero {

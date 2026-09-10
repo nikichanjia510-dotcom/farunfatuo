@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "vite --host 0.0.0.0 --port 5173",
     "build": "tsc -p tsconfig.json && vite build",
+    "build:site": "node ../../scripts/site-build-files.mjs before && tsc -p tsconfig.json && vite build --config vite.site.config.ts && node ../../scripts/site-build-files.mjs after",
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "test": "vitest run"
   },
@@ -15,15 +16,19 @@
     "react-dom": "^19.1.1"
   },
   "devDependencies": {
+    "@cloudflare/vite-plugin": "1.37.1",
+    "@cloudflare/workers-types": "4.20260515.1",
+    "@openai/sites-vite-plugin": "0.2.0",
     "@testing-library/jest-dom": "^6.8.0",
     "@testing-library/react": "^16.3.0",
     "@testing-library/user-event": "^14.6.1",
     "@types/react": "^19.1.10",
     "@types/react-dom": "^19.1.7",
-    "@vitejs/plugin-react": "^5.0.2",
+    "@vitejs/plugin-react": "^6.0.2",
     "jsdom": "^26.1.0",
     "typescript": "^5.9.2",
-    "vite": "^7.1.4",
-    "vitest": "^3.2.4"
+    "vite": "^8.0.13",
+    "vitest": "^4.1.0",
+    "wrangler": "4.92.0"
   }
 }

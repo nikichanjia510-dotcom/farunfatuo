@@ -53,10 +53,12 @@ export function Header({
   onChangeAge,
 }: HeaderProps) {
   const ageLabel = ageLevel ? `${ageLevel} 岁` : '选择年龄';
+  const compactForInvestigation = activeSection === 'game' && ageLevel === '6-12';
 
   return (
-    <header className="site-header">
-      <div className="site-header__top page-shell">
+    <header className={`site-header ${compactForInvestigation ? 'site-header--compact-game' : ''}`}>
+      <div className="site-header__inner page-shell">
+      <div className="site-header__top">
         <button
           className="brand"
           type="button"
@@ -114,7 +116,7 @@ export function Header({
           </button>
         </div>
       </div>
-      <nav className="main-nav page-shell" aria-label="主要导航">
+      <nav className="main-nav" aria-label="主要导航">
         {navigation.map(({ id, label, icon: Icon }) => (
           <button
             type="button"
@@ -128,6 +130,7 @@ export function Header({
           </button>
         ))}
       </nav>
+      </div>
     </header>
   );
 }

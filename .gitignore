@@ -13,3 +13,6 @@ data/
 .DS_Store
 Thumbs.db
 *.log
+apps/web/.openai/
+.wrangler/
+.dev.vars*

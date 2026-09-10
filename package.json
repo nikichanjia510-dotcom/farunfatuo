@@ -9,10 +9,16 @@
     "lint": "pnpm -r typecheck",
     "test": "pnpm -r test",
     "build": "pnpm -r build",
+    "build:site": "pnpm --filter @tuobao/web build:site",
+    "db:generate": "drizzle-kit generate",
     "e2e": "playwright test",
     "check": "pnpm lint && pnpm test && pnpm build"
   },
+  "dependencies": {
+    "drizzle-orm": "0.45.2"
+  },
   "devDependencies": {
-    "@playwright/test": "^1.55.0"
+    "@playwright/test": "^1.55.0",
+    "drizzle-kit": "0.31.10"
   }
 }
