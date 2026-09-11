@@ -9,6 +9,7 @@
     "lint": "pnpm -r typecheck",
     "test": "pnpm -r test",
     "build": "pnpm -r build",
+    "build:static": "pnpm --filter @tuobao/web build:static",
     "build:site": "pnpm --filter @tuobao/web build:site",
     "db:generate": "drizzle-kit generate",
     "e2e": "playwright test",

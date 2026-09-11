@@ -49,9 +49,9 @@ export function FeedbackPanel({ sessionId }: FeedbackPanelProps) {
       <section className="feedback-success page-shell" aria-labelledby="feedback-success-title">
         <Mascot size="large" mood="celebrate" />
         <CheckCircle2 aria-hidden="true" />
-        <p className="eyebrow">匿名反馈已记录</p>
+        <p className="eyebrow">本机匿名反馈已记录</p>
         <h1 id="feedback-success-title">谢谢你帮助托宝变得更好</h1>
-        <p>本次反馈没有收集姓名、联系方式或儿童身份信息。</p>
+        <p>反馈仅保存在当前浏览器，没有上传姓名、联系方式或儿童身份信息。</p>
         <button
           type="button"
           className="button button--soft"
@@ -74,7 +74,7 @@ export function FeedbackPanel({ sessionId }: FeedbackPanelProps) {
         <div>
           <p className="eyebrow">产品试用调研</p>
           <h1 id="feedback-title">你的感受，是下一次优化的起点</h1>
-          <p>只记录角色、评分和建议。请不要填写姓名、电话、邮箱、身份证号或儿童健康信息。</p>
+          <p>静态演示仅在当前浏览器记录角色、评分和建议。请不要填写姓名、电话、邮箱、身份证号或儿童健康信息。</p>
         </div>
         <MessageSquareHeart aria-hidden="true" />
       </div>

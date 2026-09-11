@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "vite --host 0.0.0.0 --port 5173",
     "build": "tsc -p tsconfig.json && vite build",
+    "build:static": "tsc -p tsconfig.json && vite build",
     "build:site": "node ../../scripts/site-build-files.mjs before && tsc -p tsconfig.json && vite build --config vite.site.config.ts && node ../../scripts/site-build-files.mjs after",
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "test": "vitest run"

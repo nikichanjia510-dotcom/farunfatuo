@@ -50,6 +50,18 @@ docker compose up --build
 
 正式部署前必须通过环境变量修改默认 `ADMIN_TOKEN`。
 
+## 免费静态发布
+
+面向公开演示时可只发布网页，不运行 API 或数据库：
+
+```bash
+pnpm build:static
+```
+
+构建产物位于 `apps/web/dist`。静态版本会把已审核关卡和知识库打包进网页，托宝助手离线检索本地知识；游戏记录和匿名反馈只保存在访客自己的浏览器中，无法跨设备汇总。
+
+推荐将 GitHub 仓库连接到 EdgeOne Makers，构建命令使用 `pnpm build:static`，输出目录使用 `apps/web/dist`。生产分支设置为 `main` 后，每次推送会自动构建并更新同一网址。
+
 ## 质量检查
 
 ```bash
