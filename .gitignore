@@ -16,3 +16,5 @@ Thumbs.db
 apps/web/.openai/
 .wrangler/
 .dev.vars*
+.edgeone/
+/apps/web/faruntuoyu.zip
