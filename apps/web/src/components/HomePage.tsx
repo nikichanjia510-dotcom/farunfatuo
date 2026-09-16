@@ -7,6 +7,7 @@ import {
   ShieldCheck,
   Sparkles,
 } from 'lucide-react';
+import { publicAsset } from '../publicAsset';
 import { Mascot } from './Mascot';
 
 interface NewsItem {
@@ -27,52 +28,52 @@ const newsItems: NewsItem[] = [
   {
     title: '【家长科普文】第1期：“托育”是什么？',
     href: 'https://mp.weixin.qq.com/s/zSvYAgOHOJBL7nfu5AJDoQ',
-    cover: '/assets/news/article-01.png',
+    cover: publicAsset('assets/news/article-01.png'),
   },
   {
     title: '【家长科普文】第2期（上）：送孩子去托育机构前，家长通常会关心哪些问题？',
     href: 'https://mp.weixin.qq.com/s/-KzdW11JzVp_W5QEMBZsYw',
-    cover: '/assets/news/article-02.png',
+    cover: publicAsset('assets/news/article-02.png'),
   },
   {
     title: '【家长科普文】第3期（上）：送孩子去托育机构前，家长通常会关心哪些问题？',
     href: 'https://mp.weixin.qq.com/s/XAPnO6kRBm6bWApURbpK4w',
-    cover: '/assets/news/article-03.png',
+    cover: publicAsset('assets/news/article-03.png'),
   },
   {
     title: '托育纠纷的处理途径',
     href: 'https://mp.weixin.qq.com/s/QWfluEUQiCGGCc1EWfoRDg',
-    cover: '/assets/news/article-04.png',
+    cover: publicAsset('assets/news/article-04.png'),
   },
   {
     title: '【家长科普文】第2期（下）：送孩子去托育机构前，家长通常会关心哪些问题？',
     href: 'https://mp.weixin.qq.com/s/l7nefxOJmMHYzrnYd2DhXQ',
-    cover: '/assets/news/article-05.png',
+    cover: publicAsset('assets/news/article-05.png'),
   },
   {
     title: '【家长科普文】第3期（下）：托育机构的安全与健康管理',
     href: 'https://mp.weixin.qq.com/s/qErhnReN3coDFy7LcTpSnA',
-    cover: '/assets/news/article-06.png',
+    cover: publicAsset('assets/news/article-06.png'),
   },
   {
     title: '【家长科普文】第5期：家庭衔接篇：把托育好习惯“搬”回家',
     href: 'https://mp.weixin.qq.com/s/OWfX97J92n4eVZyxskequQ',
-    cover: '/assets/news/article-07.png',
+    cover: publicAsset('assets/news/article-07.png'),
   },
   {
     title: '【家长科普文】第6期：托育机构资质线上查，家长选机构“关键信息”别漏看！',
     href: 'https://mp.weixin.qq.com/s/3Ou8sigVEE3BAa1DA4N74A',
-    cover: '/assets/news/article-08.png',
+    cover: publicAsset('assets/news/article-08.png'),
   },
   {
     title: '【家长科普文】第7期：托育机构的健康指南',
     href: 'https://mp.weixin.qq.com/s/zHdpLEx0E1iMM1phyI1n1Q',
-    cover: '/assets/news/article-09.png',
+    cover: publicAsset('assets/news/article-09.png'),
   },
   {
     title: '【家长科普文】第8期：分离焦虑篇：不止是孩子的哭，更是家长的修行',
     href: 'https://mp.weixin.qq.com/s/dA6LjbgPz6E2pTQOQUA2jQ',
-    cover: '/assets/news/article-10.png',
+    cover: publicAsset('assets/news/article-10.png'),
   },
 ];
 

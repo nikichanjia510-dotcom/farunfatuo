@@ -1,3 +1,5 @@
+import { publicAsset } from '../publicAsset';
+
 interface MascotProps {
   size?: 'small' | 'medium' | 'large';
   mood?: 'hello' | 'thinking' | 'celebrate';
@@ -15,7 +17,7 @@ export function Mascot({ size = 'medium', mood = 'hello' }: MascotProps) {
       <span className="mascot__spark" aria-hidden="true">
         {mood === 'celebrate' ? '✨' : mood === 'thinking' ? '💭' : '✦'}
       </span>
-      <img src="/assets/tuobao/mascot-placeholder.svg" alt={alt} />
+      <img src={publicAsset('assets/tuobao/mascot-placeholder.svg')} alt={alt} />
     </div>
   );
 }

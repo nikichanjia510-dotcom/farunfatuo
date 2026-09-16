@@ -1,4 +1,5 @@
 import { HeartHandshake, PauseCircle, ShieldCheck } from 'lucide-react';
+import { publicAsset } from '../publicAsset';
 import { Mascot } from './Mascot';
 
 export function VideoPlaceholder() {
@@ -17,7 +18,7 @@ export function VideoPlaceholder() {
             controls
             playsInline
             preload="metadata"
-            src="/assets/tuobao/legal-video.mp4"
+            src={publicAsset('assets/tuobao/legal-video.mp4')}
             aria-label="托宝法治科普动画"
           >
             您的浏览器暂不支持视频播放，请升级浏览器后重试。
