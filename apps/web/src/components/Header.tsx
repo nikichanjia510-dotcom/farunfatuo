@@ -111,8 +111,11 @@ export function Header({
             className="motion-toggle"
             onClick={onToggleMotion}
             aria-pressed={reduceMotion}
+            aria-label={`切换动效，当前${reduceMotion ? '已简化' : '已开启'}`}
+            title={reduceMotion ? '恢复页面动效' : '减少页面动效'}
           >
-            {reduceMotion ? '减少动画：开' : '减少动画：关'}
+            <span className="motion-toggle__dot" aria-hidden="true" />
+            <span>{reduceMotion ? '动效简化' : '动效开启'}</span>
           </button>
         </div>
       </div>

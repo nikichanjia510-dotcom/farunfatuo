@@ -2,6 +2,7 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import {
   ArrowLeft,
   ArrowRight,
+  BookOpenCheck,
   CheckCircle2,
   Headphones,
   RotateCcw,
@@ -23,6 +24,40 @@ interface GameExperienceProps {
 
 function isChoiceCorrect(choice: GameChoice): boolean {
   return choice.isCorrect ?? choice.isSafe;
+}
+
+function seedFromText(value: string): number {
+  let seed = 2166136261;
+  for (const character of value) {
+    seed ^= character.charCodeAt(0);
+    seed = Math.imul(seed, 16777619);
+  }
+  return seed >>> 0;
+}
+
+function shuffledChoices(
+  choices: GameChoice[],
+  seedText: string,
+  rotation: number,
+): GameChoice[] {
+  const result = [...choices];
+  let seed = seedFromText(seedText);
+
+  for (let index = result.length - 1; index > 0; index -= 1) {
+    seed = (Math.imul(seed, 1664525) + 1013904223) >>> 0;
+    const swapIndex = seed % (index + 1);
+    const currentChoice = result[index]!;
+    result[index] = result[swapIndex]!;
+    result[swapIndex] = currentChoice;
+  }
+
+  const targetIndex = result.length > 0 ? rotation % result.length : 0;
+  const currentCorrectIndex = result.findIndex(isChoiceCorrect);
+  if (currentCorrectIndex >= 0 && currentCorrectIndex !== targetIndex) {
+    const [correctAnswer] = result.splice(currentCorrectIndex, 1);
+    result.splice(targetIndex, 0, correctAnswer!);
+  }
+  return result;
 }
 
 export function GameExperience({
@@ -69,6 +104,18 @@ export function GameExperience({
   );
   const activeLevel = sortedLevels.find((level) => level.id === activeLevelId);
   const scene = activeLevel?.scenes[sceneIndex];
+  const orderedChoices = useMemo(
+    () => scene
+      ? shuffledChoices(
+          scene.choices,
+          `${sessionId}:${activeLevel?.id ?? ''}:${scene.id}`,
+          seedFromText(`${sessionId}:${activeLevel?.id ?? ''}:answer-position`) +
+            (activeLevel?.order ?? 0) +
+            sceneIndex,
+        )
+      : [],
+    [activeLevel?.id, activeLevel?.order, scene, sceneIndex, sessionId],
+  );
 
   useEffect(() => {
     if (soundEnabled && scene) speak(scene.narration);
@@ -315,15 +362,36 @@ export function GameExperience({
           <span style={{ width: `${progress}%` }} />
         </div>
         <div className="scene-card">
-          <div className="scene-card__visual" aria-hidden="true">
-            <span>{scene.illustration}</span>
-            <small>{activeLevel.shortTitle}</small>
+          <div className={`scene-card__visual ${correctChoice && scene.lesson ? 'has-lesson' : ''}`}>
+            <div className="scene-card__illustration" aria-hidden="true">
+              <span>{scene.illustration}</span>
+              <small>{activeLevel.shortTitle}</small>
+            </div>
+            {correctChoice && scene.lesson && (
+              <aside className="scene-lesson" aria-label="儿童法律小课堂">
+                <div className="scene-lesson__label">
+                  <span aria-hidden="true"><BookOpenCheck /></span>
+                  <p>儿童法律小课堂</p>
+                </div>
+                <h2>
+                  {scene.lesson.title === '儿童法律小课堂'
+                    ? '把安全本领带回家'
+                    : scene.lesson.title}
+                </h2>
+                <p>{scene.lesson.summary}</p>
+                <ul>
+                  {scene.lesson.tips.map((tip) => (
+                    <li key={tip}>{tip}</li>
+                  ))}
+                </ul>
+              </aside>
+            )}
           </div>
           <div className="scene-card__content">
             <p className="eyebrow">和家长一起想一想</p>
             <h1>{scene.prompt}</h1>
             <div className="choice-list" aria-label="选择一个做法">
-              {scene.choices.map((choice, index) => {
+              {orderedChoices.map((choice, index) => {
                 const isCorrect = isChoiceCorrect(choice);
                 const showCorrectState = correctChoice && isCorrect;
                 const showWrongState = correctChoice && !isCorrect;
@@ -350,36 +418,18 @@ export function GameExperience({
               <Mascot size="small" mood={correctChoice ? 'celebrate' : 'thinking'} />
               <p>{feedback || '选择后，托宝会温柔地告诉你为什么。'}</p>
             </div>
-            {correctChoice && scene.lesson && (
-              <div
-                style={{
-                  marginTop: '1rem',
-                  borderRadius: '16px',
-                  padding: '1rem 1.1rem',
-                  background: 'linear-gradient(135deg, rgba(255,243,214,0.9), rgba(227,245,255,0.9))',
-                  border: '1px solid rgba(245, 158, 11, 0.28)',
-                  color: '#334155',
-                }}
-              >
-                <p style={{ margin: '0 0 0.4rem', letterSpacing: '0.08em', textTransform: 'uppercase', fontWeight: 700, color: '#c7740d' }}>儿童法律小课堂</p>
-                <h3 style={{ margin: '0 0 0.3rem', fontSize: '1.2rem', color: '#1f2937' }}>{scene.lesson.title}</h3>
-                <p style={{ margin: '0 0 0.5rem', lineHeight: 1.6 }}>{scene.lesson.summary}</p>
-                <ul style={{ margin: 0, paddingLeft: '1.2rem', display: 'grid', gap: '0.25rem' }}>
-                  {scene.lesson.tips.map((tip) => (
-                    <li key={tip}>{tip}</li>
-                  ))}
-                </ul>
-              </div>
-            )}
             {correctChoice && (
-              <button
-                type="button"
-                className="button button--primary button--next"
-                onClick={nextScene}
-              >
-                {sceneIndex === activeLevel.scenes.length - 1 ? '领取成长徽章' : '进入下一个情景'}
-                <ArrowRight />
-              </button>
+              <div className="scene-card__actions">
+                <span><Sparkles aria-hidden="true" /> 本题安全本领已点亮</span>
+                <button
+                  type="button"
+                  className="button button--primary button--next"
+                  onClick={nextScene}
+                >
+                  {sceneIndex === activeLevel.scenes.length - 1 ? '领取成长徽章' : '进入下一个情景'}
+                  <ArrowRight />
+                </button>
+              </div>
             )}
           </div>
         </div>
