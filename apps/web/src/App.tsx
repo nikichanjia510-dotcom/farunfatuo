@@ -45,6 +45,7 @@ export function App() {
   const [showAgeModal, setShowAgeModal] = useState(false);
   const [isRecording, setIsRecording] = useState(false);
   const [isRecorded, setIsRecorded] = useState(false);
+  const [hasConfirmedReading, setHasConfirmedReading] = useState(false);
   const [recordBlob, setRecordBlob] = useState<Blob | null>(null);
   const [recordUrl, setRecordUrl] = useState<string | null>(null);
   const recorderRef = useRef<MediaRecorder | null>(null);
@@ -80,6 +81,10 @@ export function App() {
     document.documentElement.dataset.contrast = highContrast ? 'high' : 'normal';
     document.documentElement.dataset.motion = reduceMotion ? 'reduced' : 'full';
   }, [highContrast, reduceMotion]);
+
+  useEffect(() => {
+    if (!showSigninModal) setHasConfirmedReading(false);
+  }, [showSigninModal]);
 
   // 首次进入或切换地址时，检查强制打卡状态
   useEffect(() => {
@@ -149,6 +154,7 @@ export function App() {
       recorder.start();
       setIsRecording(true);
       setIsRecorded(false);
+      setHasConfirmedReading(false);
     } catch {
       const fallbackBlob = new Blob(['fake-audio-data'], { type: 'audio/mp3' });
       const fallbackUrl = URL.createObjectURL(fallbackBlob);
@@ -163,7 +169,7 @@ export function App() {
   };
 
   const handleCompleteSignin = () => {
-    if (recordBlob) {
+    if (recordBlob && hasConfirmedReading) {
       completeSignIn(recordBlob);
       setShowSigninModal(false);
     }
@@ -338,7 +344,7 @@ export function App() {
       {/* 强制每日法条打卡弹窗 */}
       {showSigninModal && progressState.userAgeLevel && (
         <div className="signin-backdrop" role="presentation">
-          <section className="signin-modal" role="dialog" aria-modal="true">
+          <section className="signin-modal" role="dialog" aria-modal="true" aria-labelledby="signin-dialog-title">
             <button 
               className="dialog-close signin-close" 
               type="button" 
@@ -350,66 +356,73 @@ export function App() {
             
             <div className="signin-title-row">
               <span className="signin-title-badge" aria-hidden="true"><CheckCircle2 /></span>
-              <h2>今日普法签到</h2>
-            </div>
-            
-            <div className="law-tag">
-              <span className="law-tag__icon" aria-hidden="true">◫</span>
-              《托育法草案》{progressState.dailyLawArticleNo || '第18条'}
-            </div>
-            
-            <div className="law-content">
-              {progressState.dailyLawText || '《托育法草案》第18条，托育机构应当建立安全管理制度，保障婴幼儿人身安全。'}
-            </div>
-            
-            <div className="audio-cta">
-              <button 
-                className="audio-play-btn" 
-                onClick={() => speak(`《托育法草案》${progressState.dailyLawArticleNo || '第18条'}，${progressState.dailyLawText || '托育机构应当建立安全管理制度，保障婴幼儿人身安全。'}`)}
-                aria-label="播放标准朗读"
-              >
-                <Volume2 />
-              </button>
-              <span>播放朗读</span>
-            </div>
-            
-            <button 
-              className={`record-btn ${isRecording ? 'is-recording' : (isRecorded ? 'is-completed' : '')}`}
-              onClick={handleRecordToggle}
-              aria-label="开始或停止录音"
-            >
-              {isRecording ? <span style={{fontSize: '12px'}}>停止</span> : (isRecorded ? <CheckCircle2 /> : <Mic />)}
-            </button>
-            
-            <p className="signin-voice-guide">
-              点击开始朗读，请读出《托育法草案》{progressState.dailyLawArticleNo || '第18条'}以及条文内容
-            </p>
-            
-            <div className="signin-checkline">
-              <span className="signin-checkline__box" aria-hidden="true" />
-              <span>
-                {progressState.userAgeLevel === '0-3' ? '低龄小朋友，请家长陪同，完整读出法条编号与条文完成打卡' : 
-                 progressState.userAgeLevel === '3-6' ? '跟着音频，完整读出法条编号和条文内容' : 
-                 '独立朗读，记得把法条编号一起读出来'}
-              </span>
+              <h2 id="signin-dialog-title">今日普法签到</h2>
             </div>
 
-            {isRecorded && recordUrl && (
-              <div style={{ marginTop: '0.9rem', display: 'grid', gap: '0.35rem' }}>
-                <audio controls src={recordUrl} style={{ width: '100%' }} />
-                <div className="signin-success-animation">
-                  <Sparkles />
+            <div className="signin-body">
+              <div className="signin-law-column">
+                <div className="law-tag">
+                  <span className="law-tag__icon" aria-hidden="true">◫</span>
+                  《托育法草案》{progressState.dailyLawArticleNo || '第18条'}
                 </div>
+
+                <div className="law-content">
+                  {progressState.dailyLawText || '《托育法草案》第18条，托育机构应当建立安全管理制度，保障婴幼儿人身安全。'}
+                </div>
+
+                <button
+                  className="audio-cta"
+                  type="button"
+                  onClick={() => speak(`《托育法草案》${progressState.dailyLawArticleNo || '第18条'}，${progressState.dailyLawText || '托育机构应当建立安全管理制度，保障婴幼儿人身安全。'}`)}
+                >
+                  <span className="audio-play-btn" aria-hidden="true"><Volume2 /></span>
+                  <span><strong>播放朗读</strong><small>先听一遍，再跟着读</small></span>
+                </button>
               </div>
-            )}
-            
-            <button 
-              className="button button--primary signin-complete-btn"
-              disabled={!isRecorded}
-              onClick={handleCompleteSignin}
-            >
-              解锁今日游戏权限
-            </button>
+
+              <div className="signin-action-column">
+                <button
+                  className={`record-btn ${isRecording ? 'is-recording' : (isRecorded ? 'is-completed' : '')}`}
+                  type="button"
+                  onClick={handleRecordToggle}
+                  aria-label={isRecording ? '停止录音' : (isRecorded ? '重新录音' : '开始录音')}
+                >
+                  {isRecording ? <span>停止</span> : (isRecorded ? <CheckCircle2 /> : <Mic />)}
+                </button>
+
+                <p className="signin-voice-guide">
+                  {isRecorded ? '录音已完成，可以试听并确认。' : `点击录音，读出${progressState.dailyLawArticleNo || '第18条'}及条文内容。`}
+                </p>
+
+                {isRecorded && recordUrl && (
+                  <div className="signin-recording-review">
+                    <audio controls src={recordUrl} />
+                    <div className="signin-success-animation" aria-hidden="true"><Sparkles /></div>
+                  </div>
+                )}
+
+                <label className={`signin-checkline ${hasConfirmedReading ? 'is-checked' : ''}`}>
+                  <input
+                    type="checkbox"
+                    checked={hasConfirmedReading}
+                    onChange={(event) => setHasConfirmedReading(event.target.checked)}
+                  />
+                  <span>
+                    {progressState.userAgeLevel === '0-3' ? '已由家长陪同，完整读出法条编号和条文' :
+                     progressState.userAgeLevel === '3-6' ? '已跟着音频，完整读出法条编号和条文' :
+                     '我已独立朗读，并读出了法条编号'}
+                  </span>
+                </label>
+
+                <button
+                  className="button button--primary signin-complete-btn"
+                  disabled={!isRecorded || !hasConfirmedReading}
+                  onClick={handleCompleteSignin}
+                >
+                  解锁今日游戏权限
+                </button>
+              </div>
+            </div>
           </section>
         </div>
       )}

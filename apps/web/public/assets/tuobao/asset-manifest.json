@@ -16,7 +16,7 @@
       "alt": "托育法治科普动画封面"
     },
     "video": {
-      "replacement": "legal-video.mp4",
+      "current": "legal-video.mp4",
       "recommendedSize": "1920x1080",
       "captions": "legal-video.zh-CN.vtt"
     }
